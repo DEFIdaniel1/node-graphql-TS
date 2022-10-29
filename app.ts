@@ -14,8 +14,9 @@ import { clearImage } from './util/file'
 import { ReqPlus, ServerError } from './models/custom'
 
 const app: Express = express()
+app.use(bodyParser.json())
 
-// Multer & Body Parser Setup
+// Multer setup for image uploads to app
 // Multer adds image uploads to req.file.path
 const fileStorage: multer.StorageEngine = multer.diskStorage({
     destination: (req: ReqPlus, file: Express.Multer.File, cb: Callback) => {
@@ -25,20 +26,27 @@ const fileStorage: multer.StorageEngine = multer.diskStorage({
         cb(null, new Date().toISOString() + '-' + file.originalname)
     },
 })
+const fileSizeLimit = {
+    fileSize: 1024 * 1024 * 5, // limit to 5MB
+}
 const fileFilter = (
     req: ReqPlus,
     file: Express.Multer.File,
     cb: FileFilterCallback
 ) => {
+    // Returns error if now type = image
     if (!file || file.mimetype.split('/')[0] === 'image') {
         cb(null, true)
     } else {
         cb(new Error('Only images can be uploaded.'))
     }
 }
-app.use(bodyParser.json())
 app.use(
-    multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
+    multer({
+        storage: fileStorage,
+        fileFilter: fileFilter,
+        limits: fileSizeLimit,
+    }).single('image')
 )
 // Send static image path
 app.use('/images', express.static(path.join(__dirname, 'images')))
