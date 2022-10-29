@@ -6,8 +6,8 @@ import mongoose, { Callback } from 'mongoose'
 import multer, { FileFilterCallback } from 'multer'
 import { graphqlHTTP } from 'express-graphql'
 
-// import graphqlSchema from './graphql/schema'
-// import graphqlResolver from './graphql/resolvers'
+import graphqlSchema from './graphql/schema'
+import graphqlResolver from './graphql/resolvers.js'
 import { mongoDbPassword, mongoUser, port } from './config'
 import auth from './middleware/auth'
 import { clearImage } from './util/file'
@@ -16,8 +16,10 @@ import { ReqPlus, ServerError } from './models/custom'
 const app: Express = express()
 app.use(bodyParser.json())
 
-// Multer setup for image uploads to app
-// Multer adds image uploads to req.file.path
+/**  
+    Multer setup for image uploads to app
+    Multer adds image uploads to req.file.path
+*/
 const fileStorage: multer.StorageEngine = multer.diskStorage({
     destination: (req: ReqPlus, file: Express.Multer.File, cb: Callback) => {
         cb(null, 'images')
@@ -34,11 +36,11 @@ const fileFilter = (
     file: Express.Multer.File,
     cb: FileFilterCallback
 ) => {
-    // Returns error if now type = image
-    if (!file || file.mimetype.split('/')[0] === 'image') {
-        cb(null, true)
-    } else {
+    // Returns error if now type != image
+    if (!file || file.mimetype.split('/')[0] != 'image') {
         cb(new Error('Only images can be uploaded.'))
+    } else {
+        cb(null, true)
     }
 }
 app.use(

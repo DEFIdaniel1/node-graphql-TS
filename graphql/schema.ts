@@ -1,6 +1,7 @@
 const { buildSchema } = require('graphql')
 
-module.exports = buildSchema(`
+//TO DO - convert to TS types and TS file
+const schema = buildSchema(`
     type Post {
         _id: ID!
         title: String!
@@ -73,3 +74,5 @@ module.exports = buildSchema(`
         mutation: RootMutation
     }
 `)
+
+export default schema

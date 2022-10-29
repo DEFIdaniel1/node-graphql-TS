@@ -4,6 +4,11 @@ import { Response, NextFunction } from 'express'
 import { jwtSecret } from '../config'
 import { ReqPlus } from '../models/custom'
 
+type decodedToken = {
+    token: jwt.JwtPayload | string
+    userId: string
+}
+
 const auth = (req: ReqPlus, res: Response, next: NextFunction) => {
     /* 
         JWT token authentication middleware
@@ -16,9 +21,12 @@ const auth = (req: ReqPlus, res: Response, next: NextFunction) => {
     }
     // Check if tokens match
     const token = authHeader.split(' ')[1]
-    let decodedToken
+    const decodedToken: decodedToken = {
+        token: '',
+        userId: '',
+    }
     try {
-        decodedToken = jwt.verify(token, `${jwtSecret}`)
+        decodedToken.token = jwt.verify(token, `${jwtSecret}`)
     } catch (err) {
         req.isAuth = false
         return next()
