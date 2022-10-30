@@ -2,12 +2,7 @@ import jwt from 'jsonwebtoken'
 import { Response, NextFunction } from 'express'
 
 import { jwtSecret } from '../config'
-import { ReqPlus } from '../models/custom'
-
-type decodedToken = {
-    token: jwt.JwtPayload | string
-    userId: string
-}
+import { DecodedToken, ReqPlus } from '../models/custom'
 
 const auth = (req: ReqPlus, res: Response, next: NextFunction) => {
     /* 
@@ -21,7 +16,7 @@ const auth = (req: ReqPlus, res: Response, next: NextFunction) => {
     }
     // Check if tokens match
     const token = authHeader.split(' ')[1]
-    const decodedToken: decodedToken = {
+    const decodedToken: DecodedToken = {
         token: '',
         userId: '',
     }

@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "jest",
         "build": "rimraf build && npx tsc",
         "prestart": "npm run build",
         "start": "nodemon build/app.js",
@@ -37,15 +37,13 @@
     "homepage": "https://github.com/DEFIdaniel1/node-REST-socialFeed#readme",
     "description": "",
     "devDependencies": {
-        "@types/chai": "^4.3.3",
         "@types/express": "^4.17.14",
+        "@types/jest": "^29.2.0",
         "@types/jsonwebtoken": "^8.5.9",
-        "@types/mocha": "^10.0.0",
         "@types/multer": "^1.4.7",
         "@types/node": "^18.11.7",
         "@types/validator": "^13.7.9",
-        "chai": "^4.3.6",
-        "mocha": "^10.1.0",
+        "jest": "^29.2.2",
         "nodemon": "^2.0.20",
         "rimraf": "^3.0.2"
     }
