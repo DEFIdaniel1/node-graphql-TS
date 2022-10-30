@@ -121,3 +121,5 @@ mongoose
         app.listen(port || 4040)
     })
     .catch((err) => console.log(err))
+
+export default app
