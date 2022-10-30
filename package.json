@@ -37,13 +37,16 @@
     "homepage": "https://github.com/DEFIdaniel1/node-REST-socialFeed#readme",
     "description": "",
     "devDependencies": {
+        "@types/chai": "^4.3.3",
         "@types/express": "^4.17.14",
         "@types/jsonwebtoken": "^8.5.9",
+        "@types/mocha": "^10.0.0",
         "@types/multer": "^1.4.7",
         "@types/node": "^18.11.7",
         "@types/validator": "^13.7.9",
+        "chai": "^4.3.6",
+        "mocha": "^10.1.0",
         "nodemon": "^2.0.20",
-        "rimraf": "^3.0.2",
-        "ts-node": "^10.9.1"
+        "rimraf": "^3.0.2"
     }
 }

@@ -7,7 +7,7 @@ import multer, { FileFilterCallback } from 'multer'
 import { graphqlHTTP } from 'express-graphql'
 
 import graphqlSchema from './graphql/schema'
-import graphqlResolver from './graphql/resolvers.js'
+const graphqlResolver = require('./graphql/resolvers.js') //To do: convert to TS
 import { mongoDbPassword, mongoUser, port } from './config'
 import auth from './middleware/auth'
 import { clearImage } from './util/file'

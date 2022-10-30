@@ -7,7 +7,7 @@ const User = require('../models/user')
 const Post = require('../models/post')
 const { clearImage } = require('../util/file')
 
-const graphqlResolver = {
+module.exports = {
     /* 
         Input fields on front-end userInput{email, name, password} to create a new user
         Saves new user to database
@@ -327,5 +327,3 @@ function userIsCreatorCheck(changeElement, req) {
     }
     return true
 }
-
-export default graphqlResolver
