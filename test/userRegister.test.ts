@@ -1,6 +1,6 @@
 import request from 'supertest'
 import app from '../app'
-import { NewUserInput, NewUserResponse } from './testTypes'
+import { NewUserInput } from './testTypes'
 
 describe('Register new user', () => {
     const testUser: NewUserInput = {

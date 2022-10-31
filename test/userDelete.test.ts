@@ -1,6 +1,7 @@
 import request from 'supertest'
 import app from '../app'
-import { NewUserInput, NewUserResponse } from './testTypes'
+import { Token } from '../models/custom'
+import { NewUserInput } from './testTypes'
 
 describe.skip('Delete User', () => {
     const newUser: NewUserInput = {
@@ -10,6 +11,8 @@ describe.skip('Delete User', () => {
     }
     let newUserResponse: any
     let newUserId: string
+    let loginResponse: any
+    let authToken: Token
     beforeAll(async () => {
         const createUserQuery = {
             query: `	
@@ -23,11 +26,25 @@ describe.skip('Delete User', () => {
           }	
         `,
         }
+        const loginQuery = {
+            query: `{
+              login(email: "${newUser.email}", password: "${newUser.password}") {
+                  userId
+                  token
+              }
+            }`,
+        }
         newUserResponse = await request(app)
             .post('/graphql')
             .send(JSON.stringify(createUserQuery))
             .set('Content-Type', 'application/json')
         newUserId = newUserResponse.body.data.createUser._id
+
+        loginResponse = await request(app)
+            .post('/graphql')
+            .send(JSON.stringify(loginQuery))
+            .set('Content-Type', 'application/json')
+        authToken = loginResponse.body.data.login.token
     })
     it('deleteUser request returns true', async () => {
         const deleteUserQuery = {

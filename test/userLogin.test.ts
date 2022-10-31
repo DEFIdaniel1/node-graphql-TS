@@ -1,7 +1,7 @@
 import { Token } from 'graphql'
 import request from 'supertest'
 import app from '../app'
-import { NewUserInput, NewUserResponse } from './testTypes'
+import { NewUserInput } from './testTypes'
 
 describe('User Login', () => {
     const newUser: NewUserInput = {
