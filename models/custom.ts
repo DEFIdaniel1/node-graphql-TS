@@ -20,3 +20,8 @@ export type DecodedToken = {
     token: jwt.JwtPayload | string
     userId: string
 }
+
+// Authentication tokens JWT
+export type Token = {
+    token: string
+}

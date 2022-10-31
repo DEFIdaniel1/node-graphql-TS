@@ -118,7 +118,8 @@ mongoose
         `mongodb+srv://${mongoUser}:${mongoDbPassword}@cluster0.wdwpbii.mongodb.net/messages?retryWrites=true&w=majority`
     )
     .then((result) => {
-        app.listen(port || 4040)
+        // commented out listen for testing. can't run parallel tests while active
+        // app.listen(port || 4040)
     })
     .catch((err) => console.log(err))
 
