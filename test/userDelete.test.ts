@@ -3,7 +3,7 @@ import app from '../app'
 import { Token } from '../models/custom'
 import { NewUserInput } from './testTypes'
 
-describe.skip('Delete User', () => {
+describe('Delete User', () => {
     const newUser: NewUserInput = {
         name: 'delete billy',
         password: 'sometypeofpassword',
@@ -11,56 +11,76 @@ describe.skip('Delete User', () => {
     }
     let newUserResponse: any
     let newUserId: string
+
+    const loginQuery = {
+        query: `{
+        login(email: "${newUser.email}", password: "${newUser.password}") {
+            userId
+            token
+        }
+      }`,
+    }
     let loginResponse: any
     let authToken: Token
+    let loginUserId: string
+
+    let deleteResponse: any
+
     beforeAll(async () => {
         const createUserQuery = {
             query: `	
           mutation {	
             createUser(userInput: {email: "${newUser.email}", name:"${newUser.name}", password:"${newUser.password}"}) {	
-              _id	
-              email
-              name
-              status	
+                _id	
+                email
+                name
+                status	
+              }	
             }	
-          }	
         `,
         }
-        const loginQuery = {
-            query: `{
-              login(email: "${newUser.email}", password: "${newUser.password}") {
-                  userId
-                  token
-              }
-            }`,
-        }
+
+        // Create new user
         newUserResponse = await request(app)
             .post('/graphql')
             .send(JSON.stringify(createUserQuery))
             .set('Content-Type', 'application/json')
         newUserId = newUserResponse.body.data.createUser._id
 
+        // Login that new user
         loginResponse = await request(app)
             .post('/graphql')
             .send(JSON.stringify(loginQuery))
             .set('Content-Type', 'application/json')
         authToken = loginResponse.body.data.login.token
+        loginUserId = loginResponse.body.data.login.userId
     })
-    it('deleteUser request returns true', async () => {
-        const deleteUserQuery = {
-            query: `	
-          mutation {	
-            deleteUser {	
-            }	
-          }	
-        `,
-        }
-        expect(
-            await request(app)
+    describe('User is successfully deleted', () => {
+        beforeAll(async () => {
+            // Delete new user
+            const deleteUserQuery = {
+                query: `
+                    mutation {
+                      deleteUser(id: "${loginUserId}")
+                    }
+                  `,
+            }
+            deleteResponse = await request(app)
                 .post('/graphql')
                 .send(JSON.stringify(deleteUserQuery))
-                .set('Authorization', 'application/json')
+                .set('Authorization', `Bearer ${authToken}`)
                 .set('Content-Type', 'application/json')
-        ).toBe(true)
+        })
+        it('Should get "user not found" from database login check', async () => {
+            loginResponse = await request(app)
+                .post('/graphql')
+                .send(JSON.stringify(loginQuery))
+                .set('Content-Type', 'application/json')
+            expect(loginResponse.error.text).toContain('User not found.')
+        })
+        it('deleteUser request returns true', () => {
+            console.log(deleteResponse.body)
+            expect(deleteResponse.body.data.deleteUser).toBe(true)
+        })
     })
 })

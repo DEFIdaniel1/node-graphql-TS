@@ -66,7 +66,7 @@ const schema = buildSchema(`
         updatePost(id: ID!, postInput: PostInputData): Post!
         deletePost(id: ID!): Boolean
         editUser(userInput: EditUserData): User!
-        deleteUser: Boolean
+        deleteUser(id: ID!): Boolean
     }
 
 

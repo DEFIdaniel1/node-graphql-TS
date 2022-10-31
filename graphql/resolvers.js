@@ -63,7 +63,7 @@ module.exports = {
             `${jwtSecret}`,
             { expiresIn: '1h' }
         )
-        return { token: token, userId: user._id.toString() }
+        return { token: token, userId: user._id }
     },
 
     /* 
@@ -211,12 +211,11 @@ module.exports = {
         Delete user from database
         Return boolean 'true' if successful
     */
-    deleteUser: async function (args, req) {
+    deleteUser: async function ({ id }, req) {
         authCheck(req.isAuth)
-        const user = await User.findById(req.userId)
+        const user = await User.findById(id)
         userExistsCheck(user)
         await User.findByIdAndRemove(id)
-        await user.save()
 
         return true
     },
@@ -255,7 +254,8 @@ module.exports = {
     },
 }
 
-// Check authorization of user
+// Check authorization of user against the auth middleware
+// Auth middleware already ran. Returned either true/false
 function authCheck(isAuth) {
     if (!isAuth) {
         const error = Error('Not authenticated.')
