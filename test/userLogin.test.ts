@@ -4,6 +4,7 @@ import app from '../app'
 import { NewUserInput } from './testTypes'
 
 describe('User Login', () => {
+    // Setup to create new user first
     const newUser: NewUserInput = {
         name: 'login billy',
         password: 'sometypeofpassword',
@@ -32,14 +33,16 @@ describe('User Login', () => {
     let newUserResponse: any
     let newUserId: string
     let loginResponse: any
-    let loginToken: Token
 
     beforeAll(async () => {
+        // Create new user
         newUserResponse = await request(app)
             .post('/graphql')
             .send(JSON.stringify(createUserQuery))
             .set('Content-Type', 'application/json')
         newUserId = newUserResponse.body.data.createUser._id
+
+        // Login new user
         loginResponse = await request(app)
             .post('/graphql')
             .send(JSON.stringify(loginQuery))
@@ -54,6 +57,8 @@ describe('User Login', () => {
 })
 
 describe('Login Failure', () => {
+    // Setup to create new user first
+    // beforeAll() here will not have login included
     const newUser: NewUserInput = {
         name: 'login error',
         password: 'sometypeofpassword',
@@ -76,6 +81,7 @@ describe('Login Failure', () => {
     let loginResponse: any
 
     beforeAll(async () => {
+        // Create new user
         newUserResponse = await request(app)
             .post('/graphql')
             .send(JSON.stringify(createUserQuery))
@@ -91,6 +97,7 @@ describe('Login Failure', () => {
                 }
               }`,
         }
+        // Login attempt with wrong password
         loginResponse = await request(app)
             .post('/graphql')
             .send(JSON.stringify(wrongPasswordQuery))
@@ -106,6 +113,7 @@ describe('Login Failure', () => {
                 }
               }`,
         }
+        // Login attempt with wrong email
         loginResponse = await request(app)
             .post('/graphql')
             .send(JSON.stringify(wrongEmailQuery))

@@ -118,8 +118,8 @@ export const db = mongoose
         `mongodb+srv://${mongoUser}:${mongoDbPassword}@cluster0.wdwpbii.mongodb.net/messages?retryWrites=true&w=majority`
     )
     .then((result) => {
-        // commented out listen for testing. can't run parallel tests while active
-        // app.listen(port || 4040)
+        // To do: fix - Comment out while testing. Can't run parallel tests with current settings.
+        app.listen(port || 4040)
     })
     .catch((err) => console.log(err))
 

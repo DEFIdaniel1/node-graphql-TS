@@ -4,6 +4,7 @@ import { Token } from '../models/custom'
 import { NewUserInput } from './testTypes'
 
 describe('Delete User', () => {
+    // Setup. Create new user and login for auth token.
     const newUser: NewUserInput = {
         name: 'delete billy',
         password: 'sometypeofpassword',
@@ -75,6 +76,7 @@ describe('Delete User', () => {
             expect(deleteResponse.body.data.deleteUser).toBe(true)
         })
         it('Should get "user not found" from database login check', async () => {
+            // Try to login when user is deleted.
             loginResponse = await request(app)
                 .post('/graphql')
                 .send(JSON.stringify(loginQuery))

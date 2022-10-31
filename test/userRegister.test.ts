@@ -12,16 +12,17 @@ describe('Register new user', () => {
     beforeAll(async () => {
         const graphqlQuery = {
             query: `	
-          mutation {	
-            createUser(userInput: {email: "${testUser.email}", name:"${testUser.name}", password:"${testUser.password}"}) {	
-              _id	
-              email
-              name
-              status	
-            }	
-          }	
-        `,
+                mutation {	
+                    createUser(userInput: {email: "${testUser.email}", name:"${testUser.name}", password:"${testUser.password}"}) {	
+                    _id	
+                    email
+                    name
+                    status	
+                    }	
+                }	
+                `,
         }
+        // Create new user
         response = await request(app)
             .post('/graphql')
             .send(JSON.stringify(graphqlQuery))
@@ -59,6 +60,8 @@ describe('Register new user', () => {
         expect(response.body.data.createUser._id).toBeDefined()
     })
 })
+
+// Invalid input tests:
 describe('Invalid password input', () => {
     const failingNewUser: NewUserInput = {
         name: 'baby billy',
@@ -69,15 +72,15 @@ describe('Invalid password input', () => {
         let response: any
         const graphqlQuery = {
             query: `	
-          mutation {	
-            createUser(userInput: {email: "${failingNewUser.email}", name:"${failingNewUser.name}", password:"${failingNewUser.password}"}) {	
-              _id	
-              email
-              name
-              status	
-            }	
-          }	
-        `,
+                mutation {	
+                    createUser(userInput: {email: "${failingNewUser.email}", name:"${failingNewUser.name}", password:"${failingNewUser.password}"}) {	
+                    _id	
+                    email
+                    name
+                    status	
+                    }	
+                }	
+                `,
         }
         response = await request(app)
             .post('/graphql')
@@ -92,15 +95,15 @@ describe('Invalid password input', () => {
         let response: any
         const graphqlQuery = {
             query: `	
-          mutation {	
-            createUser(userInput: {email: "${failingNewUser.email}", name:"${failingNewUser.name}", password:"${failingNewUser.password}"}) {	
-              _id	
-              email
-              name
-              status	
-            }	
-          }	
-        `,
+                mutation {	
+                    createUser(userInput: {email: "${failingNewUser.email}", name:"${failingNewUser.name}", password:"${failingNewUser.password}"}) {	
+                    _id	
+                    email
+                    name
+                    status	
+                    }	
+                }	
+                `,
         }
         response = await request(app)
             .post('/graphql')
@@ -120,15 +123,15 @@ describe('Invalid name input', () => {
         let response: any
         const graphqlQuery = {
             query: `	
-          mutation {	
-            createUser(userInput: {email: "${failingNewUser.email}", name:"${failingNewUser.name}", password:"${failingNewUser.password}"}) {	
-              _id	
-              email
-              name
-              status	
-            }	
-          }	
-        `,
+                mutation {	
+                    createUser(userInput: {email: "${failingNewUser.email}", name:"${failingNewUser.name}", password:"${failingNewUser.password}"}) {	
+                    _id	
+                    email
+                    name
+                    status	
+                    }	
+                }	
+                `,
         }
         response = await request(app)
             .post('/graphql')
@@ -143,20 +146,19 @@ describe('Invalid email input', () => {
         password: '123456',
         email: 'fake',
     }
-    //To do: resolve error status codes
     it('Should throw error with message', async () => {
         let response: any
         const graphqlQuery = {
             query: `	
-          mutation {	
-            createUser(userInput: {email: "${failingNewUser.email}", name:"${failingNewUser.name}", password:"${failingNewUser.password}"}) {	
-              _id	
-              email
-              name
-              status	
-            }	
-          }	
-        `,
+                mutation {	
+                    createUser(userInput: {email: "${failingNewUser.email}", name:"${failingNewUser.name}", password:"${failingNewUser.password}"}) {	
+                    _id	
+                    email
+                    name
+                    status	
+                    }	
+                }	
+                `,
         }
         response = await request(app)
             .post('/graphql')

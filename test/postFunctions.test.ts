@@ -5,6 +5,7 @@ import { Token } from '../models/custom'
 import { NewUserInput } from './testTypes'
 
 describe('Post Functions', () => {
+    // Setup, add new user and login prior to testing post functionality
     const newUser: NewUserInput = {
         name: 'posting billy',
         password: 'sometypeofpassword',
@@ -60,7 +61,6 @@ describe('Post Functions', () => {
             content: 'some content',
             imageUrl: 'someUrl',
         }
-
         const createPostQuery = {
             query: `
                 mutation {
@@ -80,10 +80,10 @@ describe('Post Functions', () => {
         let createPostResponse: any
         let postId: string
         let updatePostResponse: any
-
         let deletePostResponse: any
 
         beforeAll(async () => {
+            // Create post
             createPostResponse = await request(app)
                 .post('/graphql')
                 .send(JSON.stringify(createPostQuery))
@@ -127,6 +127,7 @@ describe('Post Functions', () => {
                                 }
                             `,
                 }
+                // Update Post
                 updatePostResponse = await request(app)
                     .post('/graphql')
                     .send(JSON.stringify(updatePostQuery))
@@ -158,6 +159,7 @@ describe('Post Functions', () => {
                 }
               `,
                 }
+                // Delete Post
                 deletePostResponse = await request(app)
                     .post('/graphql')
                     .send(JSON.stringify(deletePostQuery))
@@ -173,7 +175,7 @@ describe('Post Functions', () => {
         })
     })
     afterAll(async () => {
-        // Delete new user
+        // Cleanup. Delete new user from database
         const deleteUserQuery = {
             query: `
                     mutation {
