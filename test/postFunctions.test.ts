@@ -50,9 +50,9 @@ describe('Post Functions', () => {
             .post('/graphql')
             .send(JSON.stringify(loginQuery))
             .set('Content-Type', 'application/json')
-        console.log(loginResponse.body.login.token)
         authToken = loginResponse.body.data.login.token
         loginUserId = loginResponse.body.data.login.userId
+        console.log('loginUserID ' + loginUserId)
     })
     describe('Create a new post', () => {
         const postData = {
@@ -87,7 +87,16 @@ describe('Post Functions', () => {
                 .set('Authorization', `Bearer ${authToken}`)
         })
         it('Should receive 200 success response', () => {
-            expect(400)
+            expect(createPostResponse.status).toBe(200)
+        })
+        it('Should receive response body with title, content, imageUrl', () => {
+            const { title, content, imageUrl } =
+                createPostResponse.body.data.createPost
+            expect([title, content, imageUrl]).toEqual([
+                postData.title,
+                postData.content,
+                postData.imageUrl,
+            ])
         })
     })
     afterAll(async () => {

@@ -119,7 +119,7 @@ export const db = mongoose
     )
     .then((result) => {
         // commented out listen for testing. can't run parallel tests while active
-        app.listen(port || 4040)
+        // app.listen(port || 4040)
     })
     .catch((err) => console.log(err))
 
