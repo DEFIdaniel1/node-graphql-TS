@@ -16,6 +16,11 @@ module.exports = {
     createUser: async function ({ userInput }, req) {
         const { email, name, password } = userInput
         //Validation checks for email and password min length
+        if (name.trim() === '') {
+            const error = new Error('Please enter your name')
+            error.statusCode = 401
+            throw error
+        }
         passwordValidationCheck(password)
         emailValidationCheck(email)
         // Hash password for database storage
