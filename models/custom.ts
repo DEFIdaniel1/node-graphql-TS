@@ -17,8 +17,7 @@ export interface ReqPlus extends Request {
 // Used for auth check after jwt verfies incoming tokens
 // Used to save userId to req
 export type DecodedToken = {
-    token: jwt.JwtPayload | string
-    userId: string
+    token: jwt.JwtPayload | { userId: string; email: string }
 }
 
 // Authentication tokens JWT

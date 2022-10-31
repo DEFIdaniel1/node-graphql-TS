@@ -16,12 +16,9 @@ const auth = (req: ReqPlus, res: Response, next: NextFunction) => {
     }
     // Check if tokens match
     const token = authHeader.split(' ')[1]
-    const decodedToken: DecodedToken = {
-        token: '',
-        userId: '',
-    }
+    let decodedToken: any
     try {
-        decodedToken.token = jwt.verify(token, `${jwtSecret}`)
+        decodedToken = jwt.verify(token, `${jwtSecret}`)
     } catch (err) {
         req.isAuth = false
         return next()
@@ -30,9 +27,9 @@ const auth = (req: ReqPlus, res: Response, next: NextFunction) => {
         req.isAuth = false
         return next()
     }
-
     req.userId = decodedToken.userId
     req.isAuth = true
+
     next()
 }
 export default auth

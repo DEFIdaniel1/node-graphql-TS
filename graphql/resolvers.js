@@ -79,8 +79,7 @@ module.exports = {
         const { title, content, imageUrl } = postInput
         inputValidationCheck(title, content)
         // Check user database
-        var id = new mongoose.Types.ObjectId(req.userId)
-        const user = await User.findById(id)
+        const user = await User.findById(req.userId)
         if (!user) {
             const error = new Error('Invalid user.')
             error.statusCode = 401
