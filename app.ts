@@ -113,7 +113,7 @@ app.use(
     }
 )
 
-mongoose
+export const db = mongoose
     .connect(
         `mongodb+srv://${mongoUser}:${mongoDbPassword}@cluster0.wdwpbii.mongodb.net/messages?retryWrites=true&w=majority`
     )

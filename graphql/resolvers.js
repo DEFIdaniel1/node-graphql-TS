@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs')
 const validator = require('validator')
 const jwt = require('jsonwebtoken')
+const mongoose = require('mongoose')
 
 const { jwtSecret } = require('../config')
 const User = require('../models/user')
@@ -78,7 +79,8 @@ module.exports = {
         const { title, content, imageUrl } = postInput
         inputValidationCheck(title, content)
         // Check user database
-        const user = await User.findById(req.userId)
+        var id = new mongoose.Types.ObjectId(req.userId)
+        const user = await User.findById(id)
         if (!user) {
             const error = new Error('Invalid user.')
             error.statusCode = 401

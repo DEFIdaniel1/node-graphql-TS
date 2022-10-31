@@ -71,16 +71,15 @@ describe('Delete User', () => {
                 .set('Authorization', `Bearer ${authToken}`)
                 .set('Content-Type', 'application/json')
         })
+        it('deleteUser request returns true', () => {
+            expect(deleteResponse.body.data.deleteUser).toBe(true)
+        })
         it('Should get "user not found" from database login check', async () => {
             loginResponse = await request(app)
                 .post('/graphql')
                 .send(JSON.stringify(loginQuery))
                 .set('Content-Type', 'application/json')
             expect(loginResponse.error.text).toContain('User not found.')
-        })
-        it('deleteUser request returns true', () => {
-            console.log(deleteResponse.body)
-            expect(deleteResponse.body.data.deleteUser).toBe(true)
         })
     })
 })
