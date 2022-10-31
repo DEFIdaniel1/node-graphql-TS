@@ -55,11 +55,11 @@ describe('Register new user', () => {
     })
     // Cannot read property of _id from response object
     // To do: resolve issue
-    it.skip('Should contain new user ID in response body', () => {
-        expect(response.body.createUser).toHaveProperty('_id')
+    it('Should contain new user ID in response body', () => {
+        expect(response.body.data.createUser._id).toBeDefined()
     })
 })
-describe('Fail - invalid password', () => {
+describe('Invalid password input', () => {
     const failingNewUser: NewUserInput = {
         name: 'baby billy',
         password: '1234',
@@ -110,7 +110,7 @@ describe('Fail - invalid password', () => {
         expect(response.statusCode).toBe(422)
     })
 })
-describe('Fail - invalid name', () => {
+describe('Invalid name input', () => {
     const failingNewUser: NewUserInput = {
         name: '',
         password: '12345',
@@ -137,14 +137,14 @@ describe('Fail - invalid name', () => {
         expect(response.error.text).toContain('Please enter your name')
     })
 })
-describe('Fail - invalid email', () => {
+describe('Invalid email input', () => {
     const failingNewUser: NewUserInput = {
         name: 'bobby',
         password: '123456',
         email: 'fake',
     }
     //To do: resolve error status codes
-    it.skip('Should throw error with message', async () => {
+    it('Should throw error with message', async () => {
         let response: any
         const graphqlQuery = {
             query: `	
@@ -162,7 +162,6 @@ describe('Fail - invalid email', () => {
             .post('/graphql')
             .send(JSON.stringify(graphqlQuery))
             .set('Content-Type', 'application/json')
-        console.log(response.error)
         expect(response.error.text).toContain('Invalid email.')
     })
 })

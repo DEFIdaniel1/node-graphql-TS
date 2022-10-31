@@ -21,8 +21,9 @@ module.exports = {
             error.statusCode = 401
             throw error
         }
-        passwordValidationCheck(password)
-        emailValidationCheck(email)
+        await passwordValidationCheck(password)
+        await emailValidationCheck(email)
+        await doesEmailExistCheck(email)
         // Hash password for database storage
         const hashedPw = await bcrypt.hash(password, 12)
         const user = new User({
@@ -207,6 +208,20 @@ module.exports = {
     },
 
     /*
+        Delete user from database
+        Return boolean 'true' if successful
+    */
+    deleteUser: async function (args, req) {
+        authCheck(req.isAuth)
+        const user = await User.findById(req.userId)
+        userExistsCheck(user)
+        await User.findByIdAndRemove(id)
+        await user.save()
+
+        return true
+    },
+
+    /*
         Ability to edit user data with validation checks on data types
         editUserData: name, email, password, status (all nullable)
         Saves to database, outputs saved user with null password
@@ -259,7 +274,6 @@ function passwordValidationCheck(password) {
         error.statusCode = 422
         throw error
     }
-    return true
 }
 
 // Validate Email input and ensure it is not in use
@@ -269,13 +283,17 @@ async function emailValidationCheck(email) {
         error.statusCode = 422
         throw error
     }
+}
+// Check database for existing email
+async function doesEmailExistCheck(email) {
     const user = await User.findOne({ email: email })
     if (user) {
         const error = Error('User already exists.')
         error.statusCode = 404
         throw error
+    } else {
+        return true
     }
-    return true
 }
 
 // Ensure title and content inupts meet validation requirements for length and type
@@ -299,8 +317,9 @@ function inputValidationCheck(title, content) {
         error.data = errors
         error.statusCode = 422
         throw error
+    } else {
+        return true
     }
-    return true
 }
 
 // Ensure post exists
@@ -318,8 +337,9 @@ function userExistsCheck(user) {
         const error = Error('User not found.')
         error.statusCode = 404
         throw error
+    } else {
+        return true
     }
-    return true
 }
 
 // Ensure user is the correct 'owner' of the changeElement.
@@ -329,6 +349,7 @@ function userIsCreatorCheck(changeElement, req) {
         const error = new Error('Not authorized!')
         error.statusCode = 403
         throw error
+    } else {
+        return true
     }
-    return true
 }

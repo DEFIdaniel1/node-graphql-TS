@@ -103,15 +103,15 @@ app.use(
 )
 
 // Error handling
-// app.use(
-//     (error: ServerError, req: ReqPlus, res: Response, next: NextFunction) => {
-//         console.log(error)
-//         const status = error.statusCode || 500
-//         const message = error.message
-//         const data = error.data
-//         res.status(status).json({ message: message, data: data })
-//     }
-// )
+app.use(
+    (error: ServerError, req: ReqPlus, res: Response, next: NextFunction) => {
+        console.log(error)
+        const status = error.statusCode || 500
+        const message = error.message
+        const data = error.data
+        res.status(status).json({ message: message, data: data })
+    }
+)
 
 mongoose
     .connect(
